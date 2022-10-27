@@ -116,7 +116,7 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
 def main(n, file_nm="python_positions.csv", ref="sun", out=False):
     offset_momentum(BODIES[ref])
     report_energy()
-    if out:     # use a boolean to control write file or not
+    if sys.argv[2] == 1:     # use a boolean to control write file or not
         with open(file_nm, "w") as fh:      # write with descriptive column names
             fh.write('{},{},{},{},{}\n'.format('steps', 'name of the body', 'position_x', 'position_y', 'position_z'))
             name_list = list(BODIES.keys())
@@ -131,16 +131,16 @@ def main(n, file_nm="python_positions.csv", ref="sun", out=False):
 
 
 if __name__ == "__main__":
-    iteration_number=['5000','500000','5000000','50000000']
-    sys.argv.extend(iteration_number)    # extend list
+    # iteration_number=['5000','500000','5000000','50000000']
+    # sys.argv.extend(iteration_number)    # extend list
     # automatically run 4 times with different number
     if len(sys.argv) >= 2:
-        for j in range(len(sys.argv)-1):
-            start = time.perf_counter()     # time start
-            main(int(sys.argv[j+1]))
-            end = time.perf_counter()       # time end
-            print('The number of this iteration is', int(sys.argv[j+1]))
-            print('This program spends', "%.2f" % ((end-start)*1000), 'ms')
+        #for j in range(len(sys.argv)-1):
+        start = time.perf_counter()     # time start
+        main(int(sys.argv[1]))
+        end = time.perf_counter()       # time end
+        print('The number of this iteration is', int(sys.argv[1]))
+        print('This program spends', "%.2f" % ((end-start)*1000), 'ms')
         sys.exit(0)
     else:
         print(f"This is {sys.argv[0]}")
