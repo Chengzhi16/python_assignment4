@@ -13,7 +13,6 @@
 
 #include <cmath>
 #include <iostream>
-//#include <fstream>
 #include <string>
 #include <chrono>
 using namespace std::chrono;
@@ -252,21 +251,12 @@ int main(int argc, char **argv) {
         std::cout << "(an integer as the number of iterations for the n-body simulation and an string as output filename)." << std::endl;
         return EXIT_FAILURE;
     } else {
-        //std::ofstream outfile;
-
-        //const std::string filename = "cpp.csv";
         const unsigned int  n = atoi(argv[1]);
-        //outfile.open(filename,std::ios::app);
-        //outfile <<"step;name of the body;position x;position y;position z"<<std::endl;
         offset_momentum(state);
         //std::cout << energy(state) << std::endl;
         for (int i = 0; i < n; ++i) {
             advance(state, 0.01);
-            //for (int j : { 0, 1, 2, 3, 4}){
-                //outfile <<i<<";"<<state[j].name<<";"<<state[j].position.x<<";"<<state[j].position.y<<";"<<state[j].position.z<<std::endl;
-            //}
         }
-        //outfile.close();
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<std::chrono::duration<float, std::milli>>(stop - start);
         std::cout << "The number of this iteration is " << n << std::endl;
