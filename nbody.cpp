@@ -13,6 +13,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <chrono>
 using namespace std::chrono;
@@ -245,23 +246,39 @@ body state[] = {
 
 int main(int argc, char **argv) {
     auto start = high_resolution_clock::now();
-    if (argc != 2) {
+    if (argc == 1) {
         std::cout << "This is " << argv[0]  << std::endl;
         std::cout << "Call this program with two arguments" << std::endl;
         std::cout << "(an integer as the number of iterations for the n-body simulation and an string as output filename)." << std::endl;
         return EXIT_FAILURE;
     } else {
         const unsigned int  n = atoi(argv[1]);
+        const unsigned int  b = atoi(argv[2]);      // add a boolean
         offset_momentum(state);
-        //std::cout << energy(state) << std::endl;
-        for (int i = 0; i < n; ++i) {
-            advance(state, 0.01);
+        std::cout << energy(state) << std::endl;
+        if (b == 1) {
+            std::ofstream outfile;
+            const std::string filename = "cpp_position.csv";
+            outfile.open(filename,std::ios::app);
+            outfile <<"step;name of the body;position x;position y;position z"<<std::endl;
+            for (int i = 0; i < n; ++i) {
+                advance(state, 0.01);
+                for (int j : { 0, 1, 2, 3, 4}){
+                    outfile <<i<<";"<<state[j].name<<";"<<state[j].position.x<<";"<<state[j].position.y<<";"<<state[j].position.z<<std::endl;
+                }
+            }
+            outfile.close();
+        }
+        else {
+            for (int i = 0; i < n; ++i) {
+                advance(state, 0.01);
+            }
         }
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<std::chrono::duration<float, std::milli>>(stop - start);
         std::cout << "The number of this iteration is " << n << std::endl;
         std::cout << "This program spends " << duration.count() << "ms" << std::endl;
-        //std::cout << energy(state) << std::endl;
+        std::cout << energy(state) << std::endl;
         return EXIT_SUCCESS;
     }
 }
